@@ -1,4 +1,4 @@
-name: sentiment
+name: prisa
 channels:
   - pytorch
   - https://mirrors.ustc.edu.cn/anaconda/pkgs/main

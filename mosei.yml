@@ -1,7 +1,7 @@
 CMD: 'CUDA_VISIBLE_DEVICES=0 python main.py'
 HPARAMS:
   logger: True
-  dataset_name: 'mosei_dataset' #'mosi'
+  dataset_name: 'mosei_dataset'
   modality: 'audio video fusion'
   task_f_in_dim: [512]
   task_f_hid_dim: [512]
@@ -18,7 +18,7 @@ HPARAMS:
   alpha: [0.01]
   beta: [0.01]
   d: [0.9]
-  seed: [2021,2022,2023]
+  seed: [2021]
   criterion: 'L1Loss'
   unaligned: True
   using_bert: True
@@ -31,5 +31,5 @@ HPARAMS:
   contrastive_learning: True
   drop_last_batch: True
   max_patience: 3
-  bert_path: ./path/to/bert-base-uncased
-  data_path: ./path/to/mosei_unaligned_50.pkl
+  bert_path: ./pretrained_models/bert-base-uncased
+  data_path: ./data/mosei_unaligned_50.pkl

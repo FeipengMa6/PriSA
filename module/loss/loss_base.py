@@ -18,7 +18,7 @@ class NCELoss(torch.nn.Module):
         if(self.d > 0):
             distance_targets = abs(targets.unsqueeze(1) - targets)
             mask_distance = (distance_targets>self.d).bool()
-            polarity_targets = (targets>0).int()
+            polarity_targets = (targets<0).int()
             mask_polarity = abs(polarity_targets.unsqueeze(1)-polarity_targets).bool()
             self_mask = (mask_distance + mask_polarity).int()
         else:

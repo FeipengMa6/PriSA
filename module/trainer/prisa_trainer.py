@@ -17,7 +17,7 @@ class prisa_trainer(trainer_base):
     def __init__(self,cfg):
         super(prisa_trainer,self).__init__(cfg)
         self.target_class_idx = 0
-        self.modality_weight = {'video':1,'audio':1,'text':1,'fusion':1,'video_private':1,'audio_private':1}
+        self.modality_weight = {'video':1,'audio':1,'text':1,'fusion':1}
     def init_metrics(self):
         if(self.cfg.dataset_name == 'sims'):
             self.metrics = sims_metrics
@@ -42,8 +42,7 @@ class prisa_trainer(trainer_base):
     def init_schedule(self):
         warm_up_epochs = 5
         max_num_epochs = self.cfg.epochs
-        # lr_milestones = [20,50] # mosei urfunny
-        lr_milestones = [15,25] # mosi
+        lr_milestones = [20,50]
         warm_up_with_multistep_lr = lambda epoch: (epoch+1) / warm_up_epochs if epoch < warm_up_epochs else 0.1**len([m for m in lr_milestones if m <= epoch])
         warm_up_with_cosine_lr = lambda epoch: (epoch+1) / warm_up_epochs if epoch < warm_up_epochs \
         else 0.5 * ( math.cos((epoch - warm_up_epochs) /(max_num_epochs - warm_up_epochs) * math.pi) + 1)
@@ -126,10 +125,8 @@ class prisa_trainer(trainer_base):
             task_loss = loss.item()
             v_private_loss = self.criterion(score_dict['video_private'],input_dict['label'])
             a_private_loss = self.criterion(score_dict['audio_private'],input_dict['label'])
-            # TODO: check 是否保留
-            # loss += v_private_loss+a_private_loss
+            loss += v_private_loss+a_private_loss
             target = input_dict['label'] 
-            # target = self.label_conversion(input_dict['label'])
             v_vt_loss = self.cfg.alpha * (self.cl_criterion(state_dict['v_private'],state_dict['vt_fusion'],target) + self.cl_criterion(state_dict['vt_fusion'],state_dict['v_private'],target))
             a_at_loss = self.cfg.alpha * (self.cl_criterion(state_dict['a_private'],state_dict['at_fusion'],target) + self.cl_criterion(state_dict['at_fusion'],state_dict['a_private'],target))
             at_vt_loss = self.cfg.beta * (self.cl_criterion(state_dict['vt_fusion'],state_dict['at_fusion'],target) + self.cl_criterion(state_dict['at_fusion'],state_dict['vt_fusion'],target))
