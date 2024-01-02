@@ -20,6 +20,10 @@ You can train the model using the following command. The output will be saved at
 ```bash
 python -m runx.runx mosei.yml -i
 ```
+Or you can directly run the following command without runx, the output will be saved at `./log`
+```bash
+python main.py
+```
 
 Feel free to concat with us (mafp@foxmail.com) if you have any problem.
 
